@@ -6,6 +6,15 @@ in vec3 N;
 in vec3 L;
 in vec3 V;
 
+uniform float b;
+uniform float y;
+
+uniform float alpha;
+uniform float beta;
+
+uniform vec3 kd;
+
+
 void main(void)
 {
     /*
@@ -20,15 +29,12 @@ void main(void)
     vec3 gold = vec3(0.614, 0.0414, 0.0414);
     */
 
-    float diffuse = dot(N,L);
-    vec3 k_blue = vec3(0, 0, 1.0);
-    vec3 k_yellow = vec3(1.0, 1.0, 0);
-    //vec3 k_cool = k_blue + alpha * diffuse;
-    float alpha = 0.0;
-    vec3 k_cool = k_blue + alpha * diffuse;
-    //vec3 k_warm = k_yellow + beta * diffuse;
-    float beta = 1.0;
-    vec3 k_warm = k_yellow + beta * diffuse;
+    vec3 k_blue = vec3(0, 0, b);
+    vec3 k_yellow = vec3(y, y, 0);
+
+    vec3 k_cool = k_blue + alpha * kd;
+
+    vec3 k_warm = k_yellow + beta * kd;
 
 
 

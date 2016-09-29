@@ -6,6 +6,7 @@
  */
 
 #include "SceneShader.h"
+
 static float PI = 3.14159265359;
 
 
@@ -23,6 +24,19 @@ SceneShader::SceneShader(): Shader()
 	_yRot = 0.0;
 	lightPosition = glm::vec3(0.5, 0.5, 0.5);
 
+	b = askUserForSmallNumber("Enter the b(blue) value for the shader, must be between (0.0 and 1.0)");
+	y = askUserForSmallNumber("Enter the y(yellow) value for the shader, must be between (0.0 and 1.0)");
+
+	alpha = askUserForSmallNumber("Enter the alpha value for the shader, must be between (0.0 and 1.0)");
+	beta = askUserForSmallNumber("Enter the beta value for the shader, must be between (0.0 and 1.0)");
+
+	double rc, gc, bc;
+
+	rc = askUserForSmallNumber("Enter the red color value for the kd in the shader, must be between (0.0 and 1.0)");
+	gc = askUserForSmallNumber("Enter the green color value for the kd in the shader, must be between (0.0 and 1.0)");
+	bc = askUserForSmallNumber("Enter the blue color value for the kd in the shader, must be between (0.0 and 1.0)");
+
+	kd = glm::vec3(rc, gc, bc);
 }
 
 
@@ -81,7 +95,7 @@ void SceneShader::createVertexBuffer()
 	glBufferData(GL_ARRAY_BUFFER,  _mesh->vertices.size() * sizeof (trimesh::point), _mesh->vertices.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
-	
+
 	//TODO normals
 
         glGenBuffers(1, &_meshNormalBuffer);
@@ -89,6 +103,7 @@ void SceneShader::createVertexBuffer()
         glBufferData(GL_ARRAY_BUFFER,  _mesh->normals.size() * sizeof (trimesh::vec), _mesh->normals.data(), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(1);
+
 
 
 	glGenBuffers(1, &_meshIndicesBuffer );
@@ -131,7 +146,7 @@ void SceneShader::renderPlane()
 	glm::mat4 rotationX = glm::rotate(identity, _yRot  * PI/180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
    _modelview *=  rotationX;
-	
+
 	//Uniform variables
 	glUniformMatrix4fv(glGetUniformLocation(_programPlane, "modelview"), 1, GL_FALSE, glm::value_ptr(_modelview));
 	glUniformMatrix4fv(glGetUniformLocation(_programPlane, "projection"), 1, GL_FALSE, glm::value_ptr(_projection));
@@ -167,6 +182,19 @@ void SceneShader::renderMesh()
 	//uniform variables
 	glUniformMatrix4fv(glGetUniformLocation(_programMesh, "modelview"), 1, GL_FALSE, glm::value_ptr(_modelview));
 	glUniformMatrix4fv(glGetUniformLocation(_programMesh, "projection"), 1, GL_FALSE, glm::value_ptr(_projection));
+
+
+	glUniform1f(glGetUniformLocation(_programMesh, "b"), b);
+	glUniform1f(glGetUniformLocation(_programMesh, "y"), y);
+
+
+	glUniform1f(glGetUniformLocation(_programMesh, "alpha"), alpha);
+	glUniform1f(glGetUniformLocation(_programMesh, "beta"), beta);
+
+	glUniform3fv(glGetUniformLocation(_programMesh, "kd"), 1, glm::value_ptr(kd) );
+
+
+
 
 	glUniform3fv(glGetUniformLocation(_programMesh, "lightPosition"), 1, glm::value_ptr(lightPosition) );
 
@@ -255,6 +283,30 @@ void SceneShader::updateLightPositionY(float y)
 void SceneShader::updateLightPositionZ(float z)
 {
 	lightPosition.z += z;
+}
+
+float SceneShader::askUserForSmallNumber(std::string message)
+{
+	bool invalid = true;
+	float x;
+	while (invalid){
+		std::cout << message << "\n";
+		std::cin >> x;
+
+		if (x < 0.0)
+		{
+			std::cout << "Number is less than 0, the number entered must be between 0 and 1";
+			invalid = true;
+		} else if ( x > 1.0)
+		{
+			std::cout << "Number is greater than 1, the number entered must be between 0 and 1";
+			invalid = true;
+		} else {
+			invalid = false;
+		}
+	}
+	return x;
+
 }
 
 SceneShader::~SceneShader()

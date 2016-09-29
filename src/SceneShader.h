@@ -10,6 +10,7 @@
 
 #include "Shader.h"
 #include <vector>
+#include <string>
 
 #define GLM_FORCE_RADIANS
 
@@ -41,6 +42,7 @@ public:
 	void updateLightPositionX( float x );
 	void updateLightPositionY( float y );
 	void updateLightPositionZ( float z );
+	float askUserForSmallNumber(std::string message);
 
 private:
 
@@ -73,6 +75,17 @@ private:
 	float _xRot;
 	float _yRot;
 	float _aspectRatio;
+
+
+	//shader properties
+
+	float b;
+	float y;
+
+	float alpha;
+	float beta;
+
+	glm::vec3 kd;
 
 
 	trimesh::TriMesh* _mesh;
