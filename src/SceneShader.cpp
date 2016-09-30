@@ -24,6 +24,11 @@ SceneShader::SceneShader(): Shader()
 	_yRot = 0.0;
 	lightPosition = glm::vec3(0.5, 0.5, 0.5);
 
+	setUpFragmentShaderProperties();
+}
+
+void SceneShader::setUpFragmentShaderProperties()
+{
 	b = askUserForSmallNumber("Enter the b(blue) value for the shader, must be between (0.0 and 1.0)");
 	y = askUserForSmallNumber("Enter the y(yellow) value for the shader, must be between (0.0 and 1.0)");
 
@@ -37,6 +42,7 @@ SceneShader::SceneShader(): Shader()
 	bc = askUserForSmallNumber("Enter the blue color value for the kd in the shader, must be between (0.0 and 1.0)");
 
 	kd = glm::vec3(rc, gc, bc);
+
 }
 
 

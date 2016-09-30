@@ -26,6 +26,8 @@ public:
 	SceneShader();
 	~SceneShader();
 
+	void setUpFragmentShaderProperties();
+
 	void startup ();
 	void shutdown ();
 	void render();

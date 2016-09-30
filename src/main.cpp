@@ -30,9 +30,10 @@ void keyboard( unsigned char key, int x, int y )
 	break;
 	case (GLFW_KEY_Z):
 						rotate_y -=  1.0f;
-	break;
 
+	break;
 	case (GLFW_KEY_A):
+				std::cout << "A button pressed \n";
 				shader.updateLightPositionX(-factor);
 	break;
 	case (GLFW_KEY_D):
@@ -132,6 +133,10 @@ static void key_callback( GLFWwindow* window, int key, int scancode, int action,
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+ 	else if (key == GLFW_KEY_R && action == GLFW_PRESS){
+					std::cout << "R button pressed \n";
+					shader.setUpFragmentShaderProperties();
+	}
 
 	keyboard(key, 0, 0);
 
