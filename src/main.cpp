@@ -33,7 +33,6 @@ void keyboard( unsigned char key, int x, int y )
 
 	break;
 	case (GLFW_KEY_A):
-				std::cout << "A button pressed \n";
 				shader.updateLightPositionX(-factor);
 	break;
 	case (GLFW_KEY_D):

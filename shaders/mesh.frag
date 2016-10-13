@@ -38,9 +38,13 @@ void main(void)
 
 
 
-    float lightFactor = (1 + dot(L, N))/2;
+    float lightFactor = (1 - dot(L, N))/2;
 
     vec3 I = lightFactor * k_cool + (1 - lightFactor) * k_warm;
+    vec3 R = normalize(reflect(-L, N));
+    float e = 76.8;
+    float specular = pow( max( 0.0, dot(R, V)), e);
+    vec3 white = vec3(1.0, 1.0, 1.0);
 
     color = vec4( I, 1.0);
 
